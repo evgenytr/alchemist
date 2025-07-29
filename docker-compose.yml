@@ -1,0 +1,49 @@
+version: "3.3"
+services:
+  db:
+    image: postgres:15
+    restart: always
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: appstore_db_user
+      POSTGRES_PASSWORD: ma)4MqtqLF#VTb1WbKQ#
+      POSTGRES_DB: appstore
+    ports:
+      - 5432:5432
+    networks:
+      - appstore_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@appstore.local
+      PGADMIN_DEFAULT_PASSWORD: ma)4MqtqLF#VTb1WbKQ#
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 8091:80
+    depends_on:
+      - db
+    networks:
+      - appstore_network
+
+  appstore:
+    build: .
+    image: appstore:latest
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://appstore_db_user:ma)4MqtqLF#VTb1WbKQ#@db:5432/appstore
+    depends_on:
+      - db
+    ports:
+      - 8092:8092
+    networks:
+      - appstore_network
+
+volumes:
+  postgres_data:
+
+networks:
+  appstore_network:
+    driver: bridge
