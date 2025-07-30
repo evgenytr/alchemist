@@ -12,7 +12,7 @@ echo "PostgreSQL is ready!"
 
 # Run database setup
 echo "Setting up database..."
-python setup-postgres.py
+python setup_postgres.py
 
 # Start the FastAPI application
 echo "Starting FastAPI application..."
