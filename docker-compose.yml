@@ -5,10 +5,15 @@ services:
     restart: always
     volumes: 
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     environment:
-      POSTGRES_USER: appstore_db_user
-      POSTGRES_PASSWORD: ma)4MqtqLF#VTb1WbKQ#
       POSTGRES_DB: appstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Wh2#G17L}C2J89uYG.+H
+      # Application user will be created via init script
+      APP_DB_USER: appstore_db_user
+      APP_DB_PASS: ma)4MqtqLF#VTb1WbKQ#
+      APP_DB_NAME: appstore
     ports:
       - 5432:5432
     networks:
