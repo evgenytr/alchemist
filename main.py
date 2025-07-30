@@ -150,6 +150,15 @@ async def process_request(request):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Application startup:")
+    
+    # Setup database tables and indexes
+    try:
+        from setup_postgres import setup_database
+        setup_database()
+        print("Database setup completed!")
+    except Exception as e:
+        print(f"Database setup failed: {e}")
+    
     t1 = threading.Thread(target=worker, daemon=True)
     t1.start()
     loop = asyncio.get_event_loop()

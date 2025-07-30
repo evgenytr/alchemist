@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# Install netcat for database connection check
+RUN apt-get update && apt-get install -y netcat-traditional && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 
@@ -13,5 +16,9 @@ COPY . .
 # Expose port
 EXPOSE 8092
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8092"]
+# Create startup script
+COPY start.sh .
+RUN chmod +x start.sh
+
+# Run the startup script
+CMD ["./start.sh"]
