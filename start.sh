@@ -4,7 +4,7 @@ echo "Starting application..."
 
 # Wait for PostgreSQL to be ready
 echo "Waiting for PostgreSQL to be ready..."
-while ! nc -z db 5432; do
+while ! pg_isready -h db -p 5432 -U postgres; do
   echo "PostgreSQL is not ready yet, waiting..."
   sleep 2
 done
