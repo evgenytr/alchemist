@@ -1,0 +1,54 @@
+version: "3.3"
+services:
+  db:
+    image: postgres:15
+    restart: always
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    environment:
+      POSTGRES_DB: appstore
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: RootPass123!@#SuperSecure
+      # Application user credentials (passed to init script)
+      APP_DB_USER: appstore_user
+      APP_DB_PASS: AppPass456$%^UserSecure
+      APP_DB_NAME: appstore
+    ports:
+      - 5432:5432
+    networks:
+      - appstore_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@appstore.local
+      PGADMIN_DEFAULT_PASSWORD: PgAdmin789&*()AdminSecure
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 8091:80
+    depends_on:
+      - db
+    networks:
+      - appstore_network
+
+  appstore:
+    build: .
+    image: appstore:latest
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://appstore_user:AppPass456$%^UserSecure@db:5432/appstore
+    depends_on:
+      - db
+    ports:
+      - 8092:8092
+    networks:
+      - appstore_network
+
+volumes:
+  postgres_data:
+
+networks:
+  appstore_network:
+    driver: bridge
