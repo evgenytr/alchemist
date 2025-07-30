@@ -9,10 +9,10 @@ services:
     environment:
       POSTGRES_DB: appstore
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Wh2#G17L}C2J89uYG.+H
-      # Application user will be created via init script
-      APP_DB_USER: appstore_db_user
-      APP_DB_PASS: ma)4MqtqLF#VTb1WbKQ#
+      POSTGRES_PASSWORD: RootPass123!@#SuperSecure
+      # Application user credentials (passed to init script)
+      APP_DB_USER: appstore_user
+      APP_DB_PASS: AppPass456$%^UserSecure
       APP_DB_NAME: appstore
     ports:
       - 5432:5432
@@ -24,7 +24,7 @@ services:
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@appstore.local
-      PGADMIN_DEFAULT_PASSWORD: ma)4MqtqLF#VTb1WbKQ#
+      PGADMIN_DEFAULT_PASSWORD: PgAdmin789&*()AdminSecure
       PGADMIN_LISTEN_PORT: 80
     ports:
       - 8091:80
@@ -38,7 +38,7 @@ services:
     image: appstore:latest
     restart: always
     environment:
-      DATABASE_URL: postgresql://appstore_db_user:ma)4MqtqLF#VTb1WbKQ#@db:5432/appstore
+      DATABASE_URL: postgresql://appstore_user:AppPass456$%^UserSecure@db:5432/appstore
     depends_on:
       - db
     ports:
